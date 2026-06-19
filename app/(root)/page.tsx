@@ -1,10 +1,22 @@
+import HeaderBox from "@/components/HeaderBox";
+import TotalBalanceBox from "@/components/TotalBalanceBox";
+
 const page = () => {
+  const loggedIn = {firstName:"Meow"};
   return (
-    <div className="bg-black text-center">
-      <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-300 to-pink-500">
-        Meow mega bank home page
-      </h1>
-    </div>
+    <section className="home">
+      <div className="home-content">
+        <header className="home-header">
+          <HeaderBox
+            type='greeting'
+            title="Welcome"
+            user={loggedIn?.firstName}
+            subtext="Access and manage your account and transactions efficiently."
+          />
+          <TotalBalanceBox accounts={[]} totalBanks={1} totalCurrentBalance={1250.23}/>
+        </header>
+      </div>
+    </section>
   );
 };
 

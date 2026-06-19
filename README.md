@@ -1,8 +1,8 @@
 # Meow bank
 
+as of 19-6-2026 : @ file mention feature
 
-
-
+![screenshot](/documentation/screenShots/1.png)
 
 ## Stack
 
@@ -14,4 +14,6 @@ https://cloud.appwrite.io/
 https://www.chartjs.org/
 #### tailwindcss : for styling
 #### shadcn : for ui components
-https://ui.shadcn.com/docs/installation/next
+[shadcn](https://ui.shadcn.com/docs/installation/next)
+#### react countup : for counting
+https://www.npmjs.com/package/react-countup
