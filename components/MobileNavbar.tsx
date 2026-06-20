@@ -3,10 +3,6 @@ import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { sidebarLinks } from "@/constants";
@@ -31,7 +27,7 @@ const MobileNavbar = ({ user }: MobileNavProps) => {
         <SheetContent side="left" className="border-none bg-white">
           <Link
             href="/"
-            className="cursor-pointer flex items-center gap-1 px-4"
+            className="cursor-pointer flex items-center gap-1 px-4 mt-7! ml-4!"
           >
             <Image
               src={"/icons/logo.svg"}
@@ -45,7 +41,7 @@ const MobileNavbar = ({ user }: MobileNavProps) => {
           </Link>
           <div className="mobilenav-sheet">
             <SheetClose asChild>
-              <nav className="flex h-full flex-col gap-6 pt-16 text-white">
+              <nav className="flex h-full flex-col gap-6 pt-16 text-white mt-7! ml-5!">
                 {sidebarLinks.map((i) => {
                   const isActive =
                     pathname === i.route || pathname.startsWith(`${i.route}/`);
@@ -54,7 +50,7 @@ const MobileNavbar = ({ user }: MobileNavProps) => {
                       <Link
                         href={i.route}
                         key={i.label}
-                        className={`mobilenav-sheet_close w-full mx-1! py-3! ${isActive ? "bg-bank-gradient" : ""}`}
+                        className={`mobilenav-sheet_close w-full mx-1! py-3! px-2! ${isActive ? "bg-bank-gradient" : ""}`}
                       >
                         <Image
                           src={i.imgURL}

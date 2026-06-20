@@ -26,7 +26,7 @@ const SideBar = () => {
             <Link
               href={i.route}
               key={i.label}
-              className={`sidebar-link mx-1! py-3! ${isActive ? "bg-bank-gradient" : ""}`}
+              className={`sidebar-link py-3! px-2! mr-5! ${isActive ? "bg-bank-gradient" : ""}`}
             >
               <div className="relative size-6">
                 <Image

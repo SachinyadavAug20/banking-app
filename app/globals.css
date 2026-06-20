@@ -276,7 +276,7 @@ body{
   }
 
   .profile-img {
-    @apply flex-center absolute -top-8 size-24 rounded-full bg-gray-100 border-8 border-white p-2 shadow-profile;
+    @apply flex-center absolute -top-15 size-17 rounded-full bg-gray-100 border-8 border-white p-1 ml-1.5! shadow-profile;
   }
 
   .profile-details {

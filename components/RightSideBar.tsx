@@ -1,0 +1,47 @@
+import Image from "next/image";
+import Link from "next/link";
+
+const RightSideBar = ({ user, banks, transactions }: RightSidebarProps) => {
+  return (
+    <aside className="right-sidebar gap-10!">
+      <section className="flex flex-col pb-8">
+        <div className="profile-banner" />
+        <div className="profile">
+          <div className="profile-img">
+            <span className="text-4xl font-bold text-blue-500">
+              {user.firstName.slice(0, 1)}
+            </span>
+          </div>
+          <div className="profile-details ml-1.5! mt-3!">
+            <h1 className="profile-name">
+              {user.firstName} {user.lastName}
+            </h1>
+            <p className="profile-email ml-1.5!">{user.email}</p>
+          </div>
+        </div>
+      </section>
+      <section className="bank ml-1.5! gap-3!">
+        <div className="flex w-full justify-between">
+          <h2 className="header-2">My Banks</h2>
+          <Link href={"/"} className="flex gap-2">
+            <Image src="/icons/plus.svg" width={20} height={20} alt="plus" />
+            <h2 className="text-gray-600 text-14 font-semibold">Add Bank</h2>
+          </Link>
+        </div>
+
+        {banks?.length > 0 && (
+          <div className="relative flex flex-1 flex-col items-center justify-center gap-5">
+            <div className="relative z-10">BANK CARD 1</div>
+            {banks[1] && (
+              <div className="absolute right-0 top-8 z-0 w-[90%]">
+                BANK CARD 2
+              </div>
+            )}
+          </div>
+        )}
+      </section>
+    </aside>
+  );
+};
+
+export default RightSideBar;
