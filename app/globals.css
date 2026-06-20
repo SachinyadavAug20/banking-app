@@ -2,34 +2,34 @@
 @import "tw-animate-css";
 
 @theme {
-  --color-fill-1: rgba(255, 255, 255, 0.10);
-  --color-bankGradient: #0179FE;
-  --color-indigo-500: #6172F3;
-  --color-indigo-700: #3538CD;
-  --color-success-25: #F6FEF9;
-  --color-success-50: #ECFDF3;
-  --color-success-100: #D1FADF;
+  --color-fill-1: rgba(255, 255, 255, 0.1);
+  --color-bankGradient: #0179fe;
+  --color-indigo-500: #6172f3;
+  --color-indigo-700: #3538cd;
+  --color-success-25: #f6fef9;
+  --color-success-50: #ecfdf3;
+  --color-success-100: #d1fadf;
   --color-success-600: #039855;
-  --color-success-700: #027A48;
-  --color-success-900: #054F31;
-  --color-pink-25: #FEF6FB;
-  --color-pink-100: #FCE7F6;
-  --color-pink-500: #EE46BC;
-  --color-pink-600: #DD2590;
-  --color-pink-700: #C11574;
+  --color-success-700: #027a48;
+  --color-success-900: #054f31;
+  --color-pink-25: #fef6fb;
+  --color-pink-100: #fce7f6;
+  --color-pink-500: #ee46bc;
+  --color-pink-600: #dd2590;
+  --color-pink-700: #c11574;
   --color-pink-900: #851651;
-  --color-blue-25: #F5FAFF;
-  --color-blue-100: #D1E9FF;
-  --color-blue-500: #2E90FA;
-  --color-blue-600: #1570EF;
-  --color-blue-700: #175CD3;
+  --color-blue-25: #f5faff;
+  --color-blue-100: #d1e9ff;
+  --color-blue-500: #2e90fa;
+  --color-blue-600: #1570ef;
+  --color-blue-700: #175cd3;
   --color-blue-900: #194185;
-  --color-sky-1: #F3F9FF;
-  --color-black-1: #00214F;
+  --color-sky-1: #f3f9ff;
+  --color-black-1: #00214f;
   --color-black-2: #344054;
-  --color-gray-25: #FCFCFD;
-  --color-gray-200: #EAECF0;
-  --color-gray-300: #D0D5DD;
+  --color-gray-25: #fcfcfd;
+  --color-gray-200: #eaecf0;
+  --color-gray-300: #d0d5dd;
   --color-gray-500: #667085;
   --color-gray-600: #475467;
   --color-gray-700: #344054;
@@ -40,17 +40,24 @@
 
   --breakpoint-2xl: 1400px;
 }
-
+body{
+  margin: 10px;
+  padding: 10px;
+}
 @utility shadow-form {
   box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
 }
 
 @utility shadow-chart {
-  box-shadow: 0px 1px 3px 0px rgba(16, 24, 40, 0.10), 0px 1px 2px 0px rgba(16, 24, 40, 0.06);
+  box-shadow:
+    0px 1px 3px 0px rgba(16, 24, 40, 0.1),
+    0px 1px 2px 0px rgba(16, 24, 40, 0.06);
 }
 
 @utility shadow-profile {
-  box-shadow: 0px 12px 16px -4px rgba(16, 24, 40, 0.08), 0px 4px 6px -2px rgba(16, 24, 40, 0.03);
+  box-shadow:
+    0px 12px 16px -4px rgba(16, 24, 40, 0.08),
+    0px 4px 6px -2px rgba(16, 24, 40, 0.03);
 }
 
 @utility shadow-creditCard {
@@ -58,15 +65,15 @@
 }
 
 @utility bg-bank-gradient {
-  background-image: linear-gradient(90deg, #0179FE 0%, #4893FF 100%);
+  background-image: linear-gradient(90deg, #0179fe 0%, #4893ff 100%);
 }
 
 @utility bg-gradient-mesh {
-  background-image: url('/icons/gradient-mesh.svg');
+  background-image: url("/icons/gradient-mesh.svg");
 }
 
 @utility bg-bank-green-gradient {
-  background-image: linear-gradient(90deg, #01797A 0%, #489399 100%);
+  background-image: linear-gradient(90deg, #01797a 0%, #489399 100%);
 }
 
 @utility shadow-form {
@@ -74,11 +81,15 @@
 }
 
 @utility shadow-chart {
-  box-shadow: 0px 1px 3px 0px rgba(16, 24, 40, 0.10), 0px 1px 2px 0px rgba(16, 24, 40, 0.06);
+  box-shadow:
+    0px 1px 3px 0px rgba(16, 24, 40, 0.1),
+    0px 1px 2px 0px rgba(16, 24, 40, 0.06);
 }
 
 @utility shadow-profile {
-  box-shadow: 0px 12px 16px -4px rgba(16, 24, 40, 0.08), 0px 4px 6px -2px rgba(16, 24, 40, 0.03);
+  box-shadow:
+    0px 12px 16px -4px rgba(16, 24, 40, 0.08),
+    0px 4px 6px -2px rgba(16, 24, 40, 0.03);
 }
 
 @utility shadow-creditCard {
@@ -197,8 +208,6 @@
   .text14_padding10 {
     @apply text-14 px-4 py-2.5 font-semibold;
   }
-
-
 
   .header-2 {
     @apply text-18 font-semibold text-gray-900;
