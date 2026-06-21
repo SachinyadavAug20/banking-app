@@ -15,25 +15,11 @@ import {
 import * as z from "zod";
 import { useState } from "react";
 import FormController from "./FormController";
+import { formSchema as authFormSchema } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
 
 const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
-  const formSchema = z.object({
-    email: z.string().email({ message: "Please enter a valid email address" }),
-    password: z
-      .string()
-      .min(8, { message: "Password must be at least 8 characters long" })
-      .max(100, { message: "Password cannot exceed 100 characters" })
-      .regex(/[A-Z]/, {
-        message: "Password must contain at least one uppercase letter",
-      })
-      .regex(/[a-z]/, {
-        message: "Password must contain at least one lowercase letter",
-      })
-      .regex(/[0-9]/, { message: "Password must contain at least one number" })
-      .regex(/[^A-Za-z0-9]/, {
-        message: "Password must contain at least one special character",
-      }),
-  });
+  const formSchema = authFormSchema(type);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -43,10 +29,13 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
   });
   function onSubmit(data: z.infer<typeof formSchema>) {
     // Do something with the form values.
+    setIsLoading(true);
     console.log(data);
+    setTimeout(() => setIsLoading(false), 2000);
   }
 
   const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <section className="auth-form">
       <header className="flex flex-col gap-5 md:gap-8">
@@ -76,25 +65,110 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
         <>
           <form id="form-rhf-input" onSubmit={form.handleSubmit(onSubmit)}>
             <FieldGroup>
+              {type === "sign-up" && (
+                <>
+                  <FormController
+                    name="firstName"
+                    autoComplete="firstName"
+                    placeholder="Enter your first name"
+                    control={form.control}
+                  />
+                  <FormController
+                    name="lastName"
+                    autoComplete="lastName"
+                    placeholder="Enter your last name"
+                    control={form.control}
+                  />
+                  <FormController
+                    name="address"
+                    autoComplete="address"
+                    placeholder="Enter your address"
+                    control={form.control}
+                  />
+                  <FormController
+                    name="state"
+                    autoComplete="state"
+                    placeholder="Enter your state(e.g UP)"
+                    control={form.control}
+                  />
+                  <FormController
+                    name="city"
+                    autoComplete="city"
+                    placeholder="Enter your city(e.g Mumbai)"
+                    control={form.control}
+                  />
+                  <FormController
+                    name="pinCode"
+                    autoComplete="pinCode"
+                    placeholder="Enter your pin code(e.g 123456)"
+                    control={form.control}
+                  />
+                  <FormController
+                    name="dateOfBirth"
+                    autoComplete="dob"
+                    placeholder="YYYY-MM-DD(e.g 01-01-1999)"
+                    control={form.control}
+                  />
+                  <FormController
+                    name="addharCardNumber"
+                    autoComplete="addharCardNumber"
+                    placeholder="Enter your addharCardNumber(e.g 1234567890)"
+                    control={form.control}
+                  />
+                </>
+              )}
               <FormController
                 name="email"
                 autoComplete="email"
                 placeholder="Enter your email"
-                form={form}
+                control={form.control}
               />
               <FormController
                 name="password"
                 autoComplete="password"
+                type="password"
                 placeholder="Enter your password"
-                form={form}
+                control={form.control}
               />
             </FieldGroup>
-            <Field orientation="horizontal" className="px-1! text-gray-900 font-semibold font-ibm-plex-serif py-5!">
-              <Button type="submit" form="form-rhf-input" className="text-sm">
-                Submit
-              </Button>
+            <Field
+              orientation="horizontal"
+              className="px-1! text-gray-900 font-semibold font-ibm-plex-serif py-5!"
+            >
+              <div className="flex flex-col gap-4 w-full">
+                <Button
+                  type="submit"
+                  form="form-rhf-input"
+                  className="text-sm form-btn px-3! py-5!"
+                  disabled={isLoading}
+                >
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="animate-spin" size={20} />
+                      &nbsp; Loading...
+                    </>
+                  ) : type === "sign-in" ? (
+                    "Sign In"
+                  ) : (
+                    "Sign Up"
+                  )}
+                </Button>
+              </div>
             </Field>
           </form>
+          <footer className="flex justify-center gap-1">
+            <p className="text-14 font-normal text-gray-600">
+              {type === "sign-in"
+                ? "Don't have an account?"
+                : "Have an account?"}
+            </p>
+            <Link
+              href={type === "sign-in" ? "/sign-up" : "/sign-in"}
+              className="form-link"
+            >
+              {type === "sign-in" ? "Sign Up" : "Sign In"}
+            </Link>
+          </footer>
         </>
       )}
     </section>

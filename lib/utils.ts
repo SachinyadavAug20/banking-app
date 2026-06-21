@@ -2,6 +2,7 @@
 import { type ClassValue, clsx } from "clsx";
 import qs from "query-string";
 import { twMerge } from "tailwind-merge";
+import z from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -39,22 +40,22 @@ export const formatDateTime = (dateString: Date) => {
 
   const formattedDateTime: string = new Date(dateString).toLocaleString(
     "en-US",
-    dateTimeOptions
+    dateTimeOptions,
   );
 
   const formattedDateDay: string = new Date(dateString).toLocaleString(
     "en-US",
-    dateDayOptions
+    dateDayOptions,
   );
 
   const formattedDate: string = new Date(dateString).toLocaleString(
     "en-US",
-    dateOptions
+    dateOptions,
   );
 
   const formattedTime: string = new Date(dateString).toLocaleString(
     "en-US",
-    timeOptions
+    timeOptions,
   );
 
   return {
@@ -97,7 +98,7 @@ export function formUrlQuery({ params, key, value }: UrlQueryParams) {
       url: window.location.pathname,
       query: currentUrl,
     },
-    { skipNull: true }
+    { skipNull: true },
   );
 }
 
@@ -130,7 +131,7 @@ export function getAccountTypeColors(type: AccountTypes) {
 }
 
 export function countTransactionCategories(
-  transactions: Transaction[]
+  transactions: Transaction[],
 ): CategoryCount[] {
   const categoryCounts: { [category: string]: number } = {};
   let totalCount = 0;
@@ -159,7 +160,7 @@ export function countTransactionCategories(
       name: category,
       count: categoryCounts[category],
       totalCount,
-    })
+    }),
   );
 
   // Sort the aggregatedCategories array by count in descending order
@@ -195,5 +196,67 @@ export const getTransactionStatus = (date: Date) => {
 };
 export const capitalize = (str: string): string => {
   if (!str) return "";
-  return str.charAt(0).toUpperCase() + str.slice(1);
+
+  return str
+    .replace(/([A-Z])/g, " $1")
+    .replace(/[_-]/g, " ")
+    .trim()
+    .toLowerCase()
+    .replace(/^\w/, (char) => char.toUpperCase());
+};
+
+export const formSchema = (type: "sign-in" | "sign-up") => {
+  const isSignIn = type === "sign-in";
+
+  const signUpField = (validator: z.ZodString) =>
+    isSignIn ? validator.optional() : validator;
+
+  return z.object({
+    // --- Sign-In Fields (Always Required) ---
+    email: z.string().email({ message: "Please enter a valid email address" }),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters long" })
+      .max(100, { message: "Password cannot exceed 100 characters" })
+      .regex(/[A-Z]/, {
+        message: "Password must contain at least one uppercase letter",
+      })
+      .regex(/[a-z]/, {
+        message: "Password must contain at least one lowercase letter",
+      })
+      .regex(/[0-9]/, { message: "Password must contain at least one number" })
+      .regex(/[^A-Za-z0-9]/, {
+        message: "Password must contain at least one special character",
+      }),
+
+    // --- Sign-Up Fields (Wrapped in our helper) ---
+    firstName: signUpField(
+      z.string().min(2, { message: "First name must be at least 2 chars" }),
+    ),
+    lastName: signUpField(
+      z.string().min(2, { message: "Last name must be at least 2 chars" }),
+    ),
+    address: signUpField(
+      z.string().min(10, { message: "Address must be at least 10 chars" }),
+    ),
+    state: signUpField(
+      z.string().min(2, { message: "State must be at least 2 chars" }),
+    ),
+    city: signUpField(
+      z.string().min(2, { message: "City must be at least 2 chars" }),
+    ),
+    pinCode: signUpField(
+      z.string().min(6, { message: "Pin code must be at most 6 chars" }),
+    ),
+    dateOfBirth: signUpField(
+      z
+        .string()
+        .min(10, { message: "Date of birth must be at least 10 chars" }),
+    ),
+    addharCardNumber: signUpField(
+      z
+        .string()
+        .min(24, { message: "Aadhaar card number must be at least 24 chars" }),
+    ),
+  });
 };
