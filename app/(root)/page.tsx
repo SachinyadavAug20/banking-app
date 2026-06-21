@@ -3,22 +3,34 @@ import RightSideBar from "@/components/RightSideBar";
 import TotalBalanceBox from "@/components/TotalBalanceBox";
 
 const page = () => {
-  const loggedIn = {firstName:"Sachin",lastName:"Yadav",email:"sachin@meow.bnk"};
+  const loggedIn = {
+    firstName: "Sachin",
+    lastName: "Yadav",
+    email: "sachin@meow.bnk",
+  };
   return (
     <section className="home">
       <div className="home-content">
         <header className="home-header">
           <HeaderBox
-            type='greeting'
+            type="greeting"
             title="Welcome"
             user={loggedIn?.firstName}
             subtext="Access and manage your account and transactions efficiently."
           />
-          <TotalBalanceBox accounts={[]} totalBanks={1} totalCurrentBalance={1250.23}/>
+          <TotalBalanceBox
+            accounts={[]}
+            totalBanks={1}
+            totalCurrentBalance={1250.23}
+          />
         </header>
         RECENT transactions
       </div>
-      <RightSideBar user={loggedIn} transactions={[]} banks={[{},{}]} />
+      <RightSideBar
+        user={loggedIn}
+        transactions={[]}
+        banks={[{ currentBalance: 125.23 }, { currentBalance: 562.21 }]}
+      />
     </section>
   );
 };
