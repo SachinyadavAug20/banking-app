@@ -21,3 +21,5 @@ https://www.chartjs.org/
 [shadcn](https://ui.shadcn.com/docs/installation/next)
 #### react countup : for counting
 https://www.npmjs.com/package/react-countup
+#### for forms
+https://ui.shadcn.com/docs/forms/react-hook-form
