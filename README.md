@@ -1,14 +1,19 @@
 # Meow bank
 
-as of 21-6-2026 : @ file mention feature
+as of 22-6-2026 : auth login 
+
+![screenshot](/documentation/screenShots/4.png)
+![screenshot](/documentation/screenShots/3.png)
+
+as of 21-6-2026 : home page UI
 
 ![screenshot](/documentation/screenShots/3.png)
 
-as of 20-6-2026 : @ file mention feature
+as of 20-6-2026 : chartJS
 
 ![screenshot](/documentation/screenShots/2.png)
 
-as of 19-6-2026 : @ file mention feature
+as of 19-6-2026 : beginning
 
 ![screenshot](/documentation/screenShots/1.png)
 
@@ -18,6 +23,7 @@ as of 19-6-2026 : @ file mention feature
 https://plaid.com/docs/quickstart/
 #### Appwrite : for auth,db
 https://cloud.appwrite.io/
+use auth and DB from it.
 #### Chart.js : for charts
 https://www.chartjs.org/
 #### tailwindcss : for styling
@@ -27,3 +33,5 @@ https://www.chartjs.org/
 https://www.npmjs.com/package/react-countup
 #### for forms
 https://ui.shadcn.com/docs/forms/react-hook-form
+#### Dwolla
+it is extension to plaid auth to send and receive money

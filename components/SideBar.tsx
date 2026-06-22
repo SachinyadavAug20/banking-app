@@ -3,11 +3,12 @@ import { sidebarLinks } from "@/constants";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Footer from "./Footer";
 
-const SideBar = () => {
+const SideBar = ({user}:SiderbarProps) => {
   const pathname = usePathname();
   return (
-    <section className="sidebar">
+    <section className="sidebar h-[95vh]!">
       <nav className="flex flex-col gap-4">
         <Link href="/" className="mb-12 cursor-pointer flex items-center gap-2">
           <Image
@@ -44,7 +45,7 @@ const SideBar = () => {
         })}
         USER
       </nav>
-      FOOTER
+      <Footer user={user}/>
     </section>
   );
 };
