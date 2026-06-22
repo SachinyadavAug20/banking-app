@@ -17,8 +17,11 @@ import { useState } from "react";
 import FormController from "./FormController";
 import { formSchema as authFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { signIn, signUp } from "@/lib/actions/user.action";
 
 const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
+  const router = useRouter();
   const formSchema = authFormSchema(type);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -27,12 +30,27 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
       password: "",
     },
   });
-  function onSubmit(data: z.infer<typeof formSchema>) {
-    // Do something with the form values.
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
-    console.log(data);
+    try {
+      if (type === "sign-up") {
+        const newUser = await signUp(data);
+        setUser(newUser);
+      }
+      if (type === "sign-in") {
+        const response = await signIn({
+          email: data.email,
+          password: data.password,
+        });
+        if (response) router.push("/");
+      }
+    } catch (error) {
+      console.log("ERROR" + error);
+    } finally {
+      setIsLoading(false);
+    }
     setTimeout(() => setIsLoading(false), 2000);
-  }
+  };
 
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -67,54 +85,61 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
             <FieldGroup>
               {type === "sign-up" && (
                 <>
-                  <FormController
-                    name="firstName"
-                    autoComplete="firstName"
-                    placeholder="Enter your first name"
-                    control={form.control}
-                  />
-                  <FormController
-                    name="lastName"
-                    autoComplete="lastName"
-                    placeholder="Enter your last name"
-                    control={form.control}
-                  />
+                  <div className="flex gap-4">
+                    <FormController
+                      name="firstName"
+                      autoComplete="firstName"
+                      placeholder="Enter your first name"
+                      control={form.control}
+                    />
+                    <FormController
+                      name="lastName"
+                      autoComplete="lastName"
+                      placeholder="Enter your last name"
+                      control={form.control}
+                    />
+                  </div>
                   <FormController
                     name="address"
                     autoComplete="address"
                     placeholder="Enter your address"
                     control={form.control}
                   />
-                  <FormController
-                    name="state"
-                    autoComplete="state"
-                    placeholder="Enter your state(e.g UP)"
-                    control={form.control}
-                  />
+                  <div className="flex gap-4">
+                    <FormController
+                      name="state"
+                      autoComplete="state"
+                      placeholder="Enter your state(e.g UP)"
+                      control={form.control}
+                    />
+                    <FormController
+                      name="pinCode"
+                      autoComplete="pinCode"
+                      placeholder="Enter your pin code(e.g 123456)"
+                      control={form.control}
+                    />
+                  </div>
                   <FormController
                     name="city"
                     autoComplete="city"
                     placeholder="Enter your city(e.g Mumbai)"
                     control={form.control}
                   />
-                  <FormController
-                    name="pinCode"
-                    autoComplete="pinCode"
-                    placeholder="Enter your pin code(e.g 123456)"
-                    control={form.control}
-                  />
-                  <FormController
-                    name="dateOfBirth"
-                    autoComplete="dob"
-                    placeholder="YYYY-MM-DD(e.g 01-01-1999)"
-                    control={form.control}
-                  />
-                  <FormController
-                    name="addharCardNumber"
-                    autoComplete="addharCardNumber"
-                    placeholder="Enter your addharCardNumber(e.g 1234567890)"
-                    control={form.control}
-                  />
+                  <div className="flex gap-4">
+                    <FormController
+                      name="dateOfBirth"
+                      type="date"
+                      autoComplete="dob"
+                      placeholder="YYYY-MM-DD(e.g 01-01-1999)"
+                      control={form.control}
+                    />
+                    <FormController
+                      name="addharCardNumber"
+                      autoComplete="addharCardNumber"
+                      placeholder="Enter your addharCardNumber(e.g 1234567890)"
+                      control={form.control}
+                    />
+                  </div>
                 </>
               )}
               <FormController

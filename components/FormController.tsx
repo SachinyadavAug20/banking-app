@@ -3,8 +3,8 @@ import { FieldError, FieldLabel } from "./ui/field";
 import { Input } from "./ui/input";
 import { capitalize, formSchema as forms } from "@/lib/utils";
 import z from "zod";
-const formSchema = forms("sign-up");
 
+const formSchema = forms("sign-up");
 interface Props {
   name: FieldPath<z.infer<typeof formSchema>>;
   autoComplete?: string;
