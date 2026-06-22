@@ -18,7 +18,7 @@ import FormController from "./FormController";
 import { formSchema as authFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { signIn, signUp } from "@/lib/actions/user.action";
+import { getLoggedInUser, signIn, signUp } from "@/lib/actions/user.action";
 
 const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
   const router = useRouter();
@@ -28,6 +28,16 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
     defaultValues: {
       email: "",
       password: "",
+      ...(type === "sign-up" && {
+        firstName: "",
+        lastName: "",
+        address: "",
+        state: "",
+        pinCode: "",
+        city: "",
+        dateOfBirth: "",
+        addharCardNumber: "",
+      }),
     },
   });
   const onSubmit = async (data: z.infer<typeof formSchema>) => {

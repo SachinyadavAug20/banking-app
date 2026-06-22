@@ -3,11 +3,17 @@
 import { ID } from "node-appwrite";
 import { createAdminClient, createSessionClient } from "../appwrite";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { parseStringify } from "../utils";
 
 export const signIn = async (userData: signInProps) => {
+  const { email, password } = userData;
   try {
+    const { account } = await createAdminClient();
+    const response = await account.createEmailPasswordSession({
+      email,
+      password,
+    });
+    return parseStringify(response);
   } catch (error) {
     console.error("ERROR" + error);
   }
@@ -17,12 +23,12 @@ export const signUp = async (userData: SignUpParams) => {
     firstName,
     lastName,
     email,
-    address1,
+    address,
     city,
     state,
     postalCode,
     dateOfBirth,
-    ssn,
+    addharCardNumber,
     password,
   } = userData;
   try {
@@ -56,7 +62,9 @@ export const signUp = async (userData: SignUpParams) => {
 export async function getLoggedInUser() {
   try {
     const { account } = await createSessionClient();
-    return await account.get();
+    // return await account.get(); GIVES NULL AS BIG OBJECT
+    const user = await account.get();
+    return parseStringify(user);
   } catch (error) {
     return null;
   }

@@ -7,12 +7,12 @@ export async function createSessionClient() {
     .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!);
 
-  const res= await cookies()
+  const res = await cookies();
   if (!res) {
     throw new Error("No session");
   }
-  const session=res.get("appwrite-session");
-  if(!session || !session.value){
+  const session = res.get("appwrite-session");
+  if (!session || !session.value) {
     throw new Error("No session");
   }
 
@@ -25,7 +25,8 @@ export async function createSessionClient() {
   };
 }
 
-export async function createAdminClient() { // can do anything
+export async function createAdminClient() {
+  // can do anything
   const client = new Client()
     .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT!)
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT!)
@@ -38,9 +39,8 @@ export async function createAdminClient() { // can do anything
     get database() {
       return new Databases(client);
     },
-    get user(){
-      return new Users(client)
-    }
+    get user() {
+      return new Users(client);
+    },
   };
 }
-
