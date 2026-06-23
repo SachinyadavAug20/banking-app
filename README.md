@@ -19,7 +19,7 @@ as of 19-6-2026 : beginning
 
 ## Stack
 
-#### Plaid : sandbox mode(for test)
+#### Plaid : sandbox mode(for test) | sprite alternative
 https://plaid.com/docs/quickstart/
 #### Appwrite : for auth,db
 https://cloud.appwrite.io/
