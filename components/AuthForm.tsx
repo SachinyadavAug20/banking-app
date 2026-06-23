@@ -5,13 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Field,
-  FieldLabel,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-} from "@/components/ui/field";
+import { Field, FieldGroup } from "@/components/ui/field";
 import * as z from "zod";
 import { useState } from "react";
 import FormController from "./FormController";
@@ -19,6 +13,7 @@ import { formSchema as authFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getLoggedInUser, signIn, signUp } from "@/lib/actions/user.action";
+import PlaidLink from "./PlaidLink";
 
 const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
   const router = useRouter();
@@ -87,8 +82,10 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
           </h1>
         </div>
       </header>
-      {user ? (
-        <div className="flex flex-col gap-4">{/* plaidLink */}</div>
+      {true ? (
+        <div className="flex flex-col gap-4">
+          <PlaidLink user={user} variant="primary" />
+        </div>
       ) : (
         <>
           <form id="form-rhf-input" onSubmit={form.handleSubmit(onSubmit)}>
