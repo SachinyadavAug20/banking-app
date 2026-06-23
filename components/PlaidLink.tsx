@@ -3,7 +3,7 @@ import { Button } from "./ui/button";
 import { useCallback, useEffect, useState } from "react";
 import { StyledString } from "next/dist/build/swc/types";
 import { useRouter } from "next/navigation";
-import { createLinkToken } from "@/lib/actions/user.action";
+import { createLinkToken, exchangePublicToken } from "@/lib/actions/user.action";
 
 const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
   const router=useRouter();

@@ -3,7 +3,7 @@
 as of 22-6-2026 : auth login
 
 ![screenshot](/documentation/screenShots/4.png)
-![screenshot](/documentation/screenShots/3.png)
+![screenshot](/documentation/screenShots/5.png)
 
 as of 21-6-2026 : home page UI
 
@@ -51,3 +51,5 @@ https://ui.shadcn.com/docs/forms/react-hook-form
 #### Dwolla
 
 it is extension to plaid auth to send and receive money
+
+It is payment processor used 
