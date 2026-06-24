@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+
 @theme {
   --color-fill-1: rgba(255, 255, 255, 0.1);
   --color-bankGradient: #0179fe;

@@ -1,13 +1,17 @@
 import { logout } from "@/lib/actions/user.action";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const Footer = ({ user, type = "desktop" }: FooterProps) => {
   const router = useRouter();
   const handleLogout = async () => {
     const res = await logout();
     if (res) {
+      toast.success("Logged out", { description: "You have been signed out successfully." });
       router.push("/sign-in");
+    } else {
+      toast.error("Logout failed", { description: "Could not complete logout. Please try again." });
     }
   };
   return (

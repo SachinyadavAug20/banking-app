@@ -3,6 +3,7 @@ import { Button } from "./ui/button";
 import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createLinkToken, exchangePublicToken } from "@/lib/actions/user.action";
+import { toast } from "sonner";
 
 const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
   const router=useRouter();
@@ -10,14 +11,23 @@ const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
   useEffect(()=>{
     const getToken=async()=>{
       const data=await createLinkToken(user);
-      setToken(data.linkToken);
+      if (data?.linkToken) {
+        setToken(data.linkToken);
+      } else {
+        toast.error("Bank linking unavailable", { description: "Could not initialize the linking service. Please refresh and try again." });
+      }
     }
     getToken();
-  },[user]) // to get token
+  },[user])
 
   const onSuccess=useCallback<PlaidLinkOnSuccess>(async(public_token:string)=>{
-    await exchangePublicToken({publicToken:public_token,user});
-    router.push('/');
+    try {
+      await exchangePublicToken({publicToken:public_token,user});
+      toast.success("Bank account linked!", { description: "Your bank has been connected. You can now make transfers." });
+      router.push('/');
+    } catch (error) {
+      toast.error("Bank linking failed", { description: "Could not connect your bank. Please try again or choose a different bank." });
+    }
   },[user])
 
   const config:PlaidLinkOptions={

@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Field, FieldGroup } from "@/components/ui/field";
 import * as z from "zod";
@@ -14,6 +13,7 @@ import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { getLoggedInUser, signIn, signUp } from "@/lib/actions/user.action";
 import PlaidLink from "./PlaidLink";
+import { toast } from "sonner";
 
 const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
   const router = useRouter();
@@ -52,17 +52,28 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
       };
       if (type === "sign-up") {
         const newUser = await signUp(userDate);
-        setUser(newUser);
+        if (newUser) {
+          toast.success("Account created!", { description: "Your account is ready. Link your bank to start using MMCB." });
+          setUser(newUser);
+        } else {
+          toast.error("Account creation failed", { description: "This email may already be registered. Try a different email or sign in." });
+        }
       }
       if (type === "sign-in") {
         const response = await signIn({
           email: data.email,
           password: data.password,
         });
-        if (response) router.push("/");
+        if (response) {
+          toast.success("Welcome back!", { description: "You have been signed in successfully." });
+          router.push("/");
+        } else {
+          toast.error("Invalid credentials", { description: "The email or password you entered is incorrect. Please try again." });
+        }
       }
     } catch (error) {
       console.log("ERROR" + error);
+      toast.error("Something went wrong", { description: "An unexpected error occurred. Please try again or contact support." });
     } finally {
       setIsLoading(false);
     }
