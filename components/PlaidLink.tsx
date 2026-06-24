@@ -1,7 +1,6 @@
 import { PlaidLinkOnSuccess, PlaidLinkOptions, usePlaidLink } from "react-plaid-link";
 import { Button } from "./ui/button";
 import { useCallback, useEffect, useState } from "react";
-import { StyledString } from "next/dist/build/swc/types";
 import { useRouter } from "next/navigation";
 import { createLinkToken, exchangePublicToken } from "@/lib/actions/user.action";
 
@@ -32,7 +31,7 @@ const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
       {variant === "primary" ? (
         <Button className="plaidlink-primary"
         disabled={!ready}
-        onClick={()=>open}
+        onClick={()=>open()}
         >Connect with Plaid</Button>
       ) : variant === "ghost" ? (
         <Button className="plaidlink-ghost">Connect with Plaid</Button>

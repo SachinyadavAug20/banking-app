@@ -52,4 +52,6 @@ https://ui.shadcn.com/docs/forms/react-hook-form
 
 it is extension to plaid auth to send and receive money
 
+it is US only => thus can't do addhar card need to use US state and city with postCode instead of pinCode
+
 It is payment processor used 

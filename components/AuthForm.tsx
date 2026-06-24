@@ -28,10 +28,10 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
         lastName: "",
         address: "",
         state: "",
-        pinCode: "",
+        postalCode: "",
         city: "",
         dateOfBirth: "",
-        addharCardNumber: "",
+        ssn: "",
       }),
     },
   });
@@ -43,10 +43,10 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
         lastName: data.lastName!,
         address: data.address!,
         state: data.state!,
-        pinCode: data.pinCode!,
+        postalCode: data.postalCode!,
         city: data.city!,
         dateOfBirth: data.dateOfBirth!,
-        addharCardNumber: data.addharCardNumber!,
+        ssn: data.ssn!,
         email: data.email!,
         password: data.password!,
       };
@@ -94,7 +94,7 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
           </h1>
         </div>
       </header>
-      {true ? (
+      {user ? (
         <div className="flex flex-col gap-4">
           <PlaidLink user={user} variant="primary" />
         </div>
@@ -128,13 +128,13 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
                     <FormController
                       name="state"
                       autoComplete="state"
-                      placeholder="Enter your state(e.g UP)"
+                      placeholder="Enter your state(e.g NY)"
                       control={form.control}
                     />
                     <FormController
-                      name="pinCode"
-                      autoComplete="pinCode"
-                      placeholder="Enter your pin code(e.g 123456)"
+                      name="postalCode"
+                      autoComplete="postalCode"
+                      placeholder="Enter your postal code(e.g 12345)"
                       control={form.control}
                     />
                   </div>
@@ -153,9 +153,9 @@ const AuthForm = ({ type }: { type: "sign-in" | "sign-up" }) => {
                       control={form.control}
                     />
                     <FormController
-                      name="addharCardNumber"
-                      autoComplete="addharCardNumber"
-                      placeholder="Enter your addharCardNumber(e.g 1234567890)"
+                      name="ssn"
+                      autoComplete="ssn"
+                      placeholder="Enter your SSN(e.g 123-45-6789)"
                       control={form.control}
                     />
                   </div>

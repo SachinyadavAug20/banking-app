@@ -11,16 +11,12 @@ import {
   Products,
 } from "plaid";
 import { plaidClient } from "../plaid";
-import { access } from "fs";
 import { revalidatePath } from "next/cache";
 import { addFundingSource, createDwollaCustomer } from "./dwolla.action";
-import { User } from "@sentry/nextjs";
-import { catchall } from "zod/v4-mini";
 
 const {
   APPWRITE_DATABASE_ID,
   APPWRITE_USER_COLLECTION_ID,
-  APPWRITE_DWOLLA_COLLECTION_ID,
   APPWRITE_BANK_COLLECTION_ID,
 } = process.env;
 
@@ -47,7 +43,7 @@ export const signUp = async (userData: SignUpParams) => {
     state,
     postalCode,
     dateOfBirth,
-    addharCardNumber,
+    ssn,
     password,
   } = userData;
   let newUserAccount;
@@ -71,7 +67,7 @@ export const signUp = async (userData: SignUpParams) => {
       state,
       postalCode,
       dateOfBirth,
-      ssn: addharCardNumber,
+      ssn,
       type: "personal",
     });
 
@@ -83,7 +79,16 @@ export const signUp = async (userData: SignUpParams) => {
       APPWRITE_USER_COLLECTION_ID!,
       ID.unique(),
       {
-        ...userData,
+        firstName,
+        lastName,
+        email,
+        address,
+        city,
+        state,
+        postalCode,
+        dateOfBirth,
+        ssn,
+        name: `${firstName} ${lastName}`,
         userId: newUserAccount.$id,
         dwollaCustomerId,
         dwollaCustomerUrl,

@@ -245,18 +245,18 @@ export const formSchema = (type: "sign-in" | "sign-up") => {
     city: signUpField(
       z.string().min(2, { message: "City must be at least 2 chars" }),
     ),
-    pinCode: signUpField(
-      z.string().min(6, { message: "Pin code must be at most 6 chars" }),
+    postalCode: signUpField(
+      z.string().min(5, { message: "Postal code must be at most 6 chars" }),
     ),
     dateOfBirth: signUpField(
       z
         .string()
         .min(10, { message: "Date of birth must be at least 10 chars" }),
     ),
-    addharCardNumber: signUpField(
+    ssn: signUpField(
       z
         .string()
-        .min(24, { message: "Aadhaar card number must be at least 24 chars" }),
+        .min(4, { message: "SSN must be at least 4 chars" }),
     ),
   });
 };
