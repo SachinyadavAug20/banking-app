@@ -1,6 +1,6 @@
 "use server";
 
-import { ID } from "node-appwrite";
+import { ID, Query } from "node-appwrite";
 import { createAdminClient, createSessionClient } from "../appwrite";
 import { cookies } from "next/headers";
 import { encryptId, extractCustomerIdFromUrl, parseStringify } from "../utils";
@@ -13,6 +13,7 @@ import {
 import { plaidClient } from "../plaid";
 import { revalidatePath } from "next/cache";
 import { addFundingSource, createDwollaCustomer } from "./dwolla.action";
+import { toast } from "sonner";
 
 const {
   APPWRITE_DATABASE_ID,
@@ -20,19 +21,43 @@ const {
   APPWRITE_BANK_COLLECTION_ID,
 } = process.env;
 
+export const getUserInfo = async ({ userId }: getUserInfoProps) => {
+  try {
+    const { database } = await createAdminClient();
+    const user = await database.listDocuments(
+      APPWRITE_DATABASE_ID!,
+      APPWRITE_USER_COLLECTION_ID!,
+      [Query.equal("$id", [userId])],
+    );
+    return parseStringify(user.documents[0]);
+  } catch (error) {
+    toast.error("Failed to get user. Please try again.");
+    console.log(error);
+  }
+};
+
 export const signIn = async (userData: signInProps) => {
   const { email, password } = userData;
   try {
     const { account } = await createAdminClient();
-    const response = await account.createEmailPasswordSession({
+    const session = await account.createEmailPasswordSession({
       email,
       password,
     });
-    return parseStringify(response);
+    const co = await cookies();
+    co.set("appwrite-session", session.secret, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
+    });
+    const user = await getUserInfo({ userId: session.userId });
+    return parseStringify(user);
   } catch (error) {
     console.error("ERROR" + error);
   }
 };
+
 export const signUp = async (userData: SignUpParams) => {
   const {
     firstName,
@@ -117,8 +142,8 @@ export const signUp = async (userData: SignUpParams) => {
 export async function getLoggedInUser() {
   try {
     const { account } = await createSessionClient();
-    // return await account.get(); GIVES NULL AS BIG OBJECT
-    const user = await account.get();
+    const res=await account.get();
+    const user = await getUserInfo({ userId: res.$id });
     return parseStringify(user);
   } catch (error) {
     return null;
@@ -196,7 +221,7 @@ export const exchangePublicToken = async ({
       accountId: account.account_id,
       accessToken,
       fundingSourceUrl,
-      sharableId: encryptId(account.account_id),
+      shareableId: encryptId(account.account_id),
     });
     revalidatePath("/");
     return parseStringify({
@@ -212,7 +237,7 @@ export const createBankAccount = async ({
   accountId,
   accessToken,
   fundingSourceUrl,
-  sharableId,
+  shareableId,
 }: createBankAccountProps) => {
   try {
     const { database } = await createAdminClient();
@@ -226,11 +251,40 @@ export const createBankAccount = async ({
         accountId,
         accessToken,
         fundingSourceUrl,
-        sharableId,
+        shareableId,
       },
     );
     return parseStringify(bankAccount);
   } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getBanks = async ({ userId }: getBanksProps) => {
+  try {
+    const { database } = await createAdminClient();
+    const banks = await database.listDocuments(
+      APPWRITE_DATABASE_ID!,
+      APPWRITE_BANK_COLLECTION_ID!,
+      [Query.equal("userId", userId)],
+    );
+    return parseStringify(banks.documents);
+  } catch (error) {
+    toast.error("Failed to get banks. Please try again.");
+    console.log(error);
+  }
+};
+export const getBank = async ({ documentId }: getBankProps) => {
+  try {
+    const { database } = await createAdminClient();
+    const bank = await database.listDocuments(
+      APPWRITE_DATABASE_ID!,
+      APPWRITE_BANK_COLLECTION_ID!,
+      [Query.equal("$id", [documentId])],
+    );
+    return parseStringify(bank.documents[0]);
+  } catch (error) {
+    toast.error("Failed to get banks. Please try again.");
     console.log(error);
   }
 };
