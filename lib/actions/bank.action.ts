@@ -20,9 +20,10 @@ export const getAccounts = async ({ userId }: getAccountsProps) => {
   try {
     // get banks from db
     const banks = await getBanks({ userId });
+    if (!banks) return { data: [], totalBanks: 0, totalCurrentBalance: 0 };
 
     const accounts = await Promise.all(
-      banks?.map(async (bank: Bank) => {
+      banks.map(async (bank: Bank) => {
         // get each account info from plaid
         const accountsResponse = await plaidClient.accountsGet({
           access_token: bank.accessToken,
@@ -38,7 +39,7 @@ export const getAccounts = async ({ userId }: getAccountsProps) => {
           id: accountData.account_id,
           availableBalance: accountData.balances.available!,
           currentBalance: accountData.balances.current!,
-          institutionId: institution.institution_id,
+          // institutionId: institution.institution_id,
           name: accountData.name,
           officialName: accountData.official_name,
           mask: accountData.mask!,
@@ -80,7 +81,7 @@ export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
       bankId: bank.$id,
     });
 
-    const transferTransactions = transferTransactionsData.documents.map(
+    const transferTransactions = (transferTransactionsData?.documents ?? []).map(
       (transferData: Transaction) => ({
         id: transferData.$id,
         name: transferData.name!,
@@ -105,7 +106,7 @@ export const getAccount = async ({ appwriteItemId }: getAccountProps) => {
       id: accountData.account_id,
       availableBalance: accountData.balances.available!,
       currentBalance: accountData.balances.current!,
-      institutionId: institution.institution_id,
+      // institutionId: institution.institution_id,
       name: accountData.name,
       officialName: accountData.official_name,
       mask: accountData.mask!,
@@ -133,14 +134,14 @@ export const getInstitution = async ({
   institutionId,
 }: getInstitutionProps) => {
   try {
-    // const institutionResponse = await plaidClient.institutionsGetById({
-    //   institution_id: institutionId,
-    //   country_codes: ["US"] as CountryCode[],
-    // });
-    //
-    // const intitution = institutionResponse.data.institution;
-    //
-    // return parseStringify(intitution);
+    const institutionResponse = await plaidClient.institutionsGetById({
+      institution_id: institutionId,
+      country_codes: ["US"] as CountryCode[],
+    });
+
+    const intitution = institutionResponse.data.institution;
+
+    return parseStringify(intitution);
   } catch (error) {
     console.error("An error occurred while getting the accounts:", error);
   }
@@ -155,30 +156,30 @@ export const getTransactions = async ({
 
   try {
     // Iterate through each page of new transaction updates for item
-    // while (hasMore) {
-    //   const response = await plaidClient.transactionsSync({
-    //     access_token: accessToken,
-    //   });
-    //
-    //   const data = response.data;
-    //
-    //   transactions = response.data.added.map((transaction) => ({
-    //     id: transaction.transaction_id,
-    //     name: transaction.name,
-    //     paymentChannel: transaction.payment_channel,
-    //     type: transaction.payment_channel,
-    //     accountId: transaction.account_id,
-    //     amount: transaction.amount,
-    //     pending: transaction.pending,
-    //     category: transaction.category ? transaction.category[0] : "",
-    //     date: transaction.date,
-    //     image: transaction.logo_url,
-    //   }));
-    //
-    //   hasMore = data.has_more;
-    // }
-    //
-    // return parseStringify(transactions);
+    while (hasMore) {
+      const response = await plaidClient.transactionsSync({
+        access_token: accessToken,
+      });
+
+      const data = response.data;
+
+      transactions = response.data.added.map((transaction) => ({
+        id: transaction.transaction_id,
+        name: transaction.name,
+        paymentChannel: transaction.payment_channel,
+        type: transaction.payment_channel,
+        accountId: transaction.account_id,
+        amount: transaction.amount,
+        pending: transaction.pending,
+        category: transaction.category ? transaction.category[0] : "",
+        date: transaction.date,
+        image: transaction.logo_url,
+      }));
+
+      hasMore = data.has_more;
+    }
+
+    return parseStringify(transactions);
   } catch (error) {
     console.error("An error occurred while getting the accounts:", error);
   }
@@ -199,23 +200,23 @@ export const createTransfer = async () => {
     },
   };
   try {
-    // const transferAuthResponse =
-    //   await plaidClient.transferAuthorizationCreate(transferAuthRequest);
-    // const authorizationId = transferAuthResponse.data.authorization.id;
-    //
-    // const transferCreateRequest: TransferCreateRequest = {
-    //   access_token: "access-sandbox-cddd20c1-5ba8-4193-89f9-3a0b91034c25",
-    //   account_id: "Zl8GWV1jqdTgjoKnxQn1HBxxVBanm5FxZpnQk",
-    //   description: "payment",
-    //   authorization_id: authorizationId,
-    // };
-    //
-    // const responseCreateResponse = await plaidClient.transferCreate(
-    //   transferCreateRequest
-    // );
-    //
-    // const transfer = responseCreateResponse.data.transfer;
-    // return parseStringify(transfer);
+    const transferAuthResponse =
+      await plaidClient.transferAuthorizationCreate(transferAuthRequest);
+    const authorizationId = transferAuthResponse.data.authorization.id;
+
+    const transferCreateRequest: TransferCreateRequest = {
+      access_token: "access-sandbox-cddd20c1-5ba8-4193-89f9-3a0b91034c25",
+      account_id: "Zl8GWV1jqdTgjoKnxQn1HBxxVBanm5FxZpnQk",
+      description: "payment",
+      authorization_id: authorizationId,
+    };
+
+    const responseCreateResponse = await plaidClient.transferCreate(
+      transferCreateRequest
+    );
+
+    const transfer = responseCreateResponse.data.transfer;
+    return parseStringify(transfer);
   } catch (error) {
     console.error(
       "An error occurred while creating transfer authorization:",

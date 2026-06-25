@@ -27,11 +27,11 @@ export const getUserInfo = async ({ userId }: getUserInfoProps) => {
     const user = await database.listDocuments(
       APPWRITE_DATABASE_ID!,
       APPWRITE_USER_COLLECTION_ID!,
-      [Query.equal("$id", [userId])],
+      [Query.equal("userId", userId)],
     );
+    if (!user?.documents[0]) return null;
     return parseStringify(user.documents[0]);
   } catch (error) {
-    toast.error("Failed to get user. Please try again.");
     console.log(error);
   }
 };
@@ -139,13 +139,17 @@ export const signUp = async (userData: SignUpParams) => {
     console.error("ERROR" + error);
   }
 };
+
 export async function getLoggedInUser() {
   try {
     const { account } = await createSessionClient();
-    const res=await account.get();
-    const user = await getUserInfo({ userId: res.$id });
+    const result = await account.get();
+
+    const user = await getUserInfo({ userId: result.$id})
+
     return parseStringify(user);
   } catch (error) {
+    console.log(error)
     return null;
   }
 }
@@ -261,6 +265,7 @@ export const createBankAccount = async ({
 };
 
 export const getBanks = async ({ userId }: getBanksProps) => {
+  if (!userId) return [];
   try {
     const { database } = await createAdminClient();
     const banks = await database.listDocuments(
@@ -270,8 +275,8 @@ export const getBanks = async ({ userId }: getBanksProps) => {
     );
     return parseStringify(banks.documents);
   } catch (error) {
-    toast.error("Failed to get banks. Please try again.");
     console.log(error);
+    return [];
   }
 };
 export const getBank = async ({ documentId }: getBankProps) => {
@@ -284,7 +289,6 @@ export const getBank = async ({ documentId }: getBankProps) => {
     );
     return parseStringify(bank.documents[0]);
   } catch (error) {
-    toast.error("Failed to get banks. Please try again.");
     console.log(error);
   }
 };
