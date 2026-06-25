@@ -1,5 +1,9 @@
 # Meow bank
 
+as of 25-6-2026 : recent transactions
+
+![screenshot](/documentation/screenShots/6.png)
+
 as of 22-6-2026 : auth login
 
 ![screenshot](/documentation/screenShots/4.png)

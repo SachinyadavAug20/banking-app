@@ -1,0 +1,62 @@
+import Link from "next/link";
+
+interface Props {
+  accounts: Account[];
+  page?: number;
+  transactions?: Transaction[];
+  appwriteItemId: string;
+}
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { BankTabItem } from "./BankTabItem";
+import BankInfo from "./bankInfo";
+import TransactionsTable from "./TransactionsTable";
+
+const RecentTransactions = ({
+  accounts,
+  page = 1,
+  transactions = [],
+  appwriteItemId,
+}: Props) => {
+  return (
+    <section className="recent-transactions px-2!">
+      <header className="flex items-center justify-between">
+        <h2 className="recent-transactions-label">Recent Transactions</h2>
+        <Link
+          href={`/transactions/?id=${appwriteItemId}`}
+          className="view-all-btn px-2! py-1!"
+        >
+          View all
+        </Link>
+      </header>
+      <Tabs defaultValue={appwriteItemId} className="w-full flex-col gap-2">
+        <TabsList className="recent-transactions-tablist">
+          {accounts.map((account: Account) => (
+            <TabsTrigger key={account.id} value={account.appwriteItemId}>
+              <BankTabItem
+                key={account.id}
+                account={account}
+                appwriteItemId={appwriteItemId}
+              />
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        {accounts.map((account: Account) => (
+          <TabsContent
+            value={account.appwriteItemId}
+            key={account.id}
+            className="space-y-4"
+          >
+            <BankInfo
+              account={account}
+              appwriteItemId={appwriteItemId}
+              type="full"
+            />
+            <TransactionsTable transactions={transactions} />
+          </TabsContent>
+        ))}
+      </Tabs>
+    </section>
+  );
+};
+
+export default RecentTransactions;

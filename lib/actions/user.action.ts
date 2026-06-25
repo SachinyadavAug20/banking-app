@@ -172,7 +172,7 @@ export const createLinkToken = async (user: User) => {
         client_user_id: user.$id,
       },
       client_name: user.name,
-      products: ["auth"] as Products[],
+      products: ["auth","transactions"] as Products[],
       language: "en",
       country_codes: ["US"] as CountryCode[],
     };

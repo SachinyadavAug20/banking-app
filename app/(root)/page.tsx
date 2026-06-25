@@ -32,7 +32,7 @@ const page = async (props: SearchParamProps) => {
             totalCurrentBalance={accounts.totalCurrentBalance}
           />
         </header>
-        <RecentTransactions account={account} transactions={account?.transactions} appwriteItemId={appwriteItemId} page={currentPage} />
+        <RecentTransactions accounts={accounts.data} transactions={account?.transactions} appwriteItemId={appwriteItemId} page={currentPage} />
       </div>
       <RightSideBar
         user={loggedIn}
