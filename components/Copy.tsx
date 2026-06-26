@@ -10,7 +10,7 @@ const Copy = ({ title }: { title: string }) => {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(title);
     setHasCopied(true);
-    toast.info("Copied to clipboard", { description: "Copied to clipboard" });
+    toast.info("Copied to clipboard", { description: "Share this code with your friend" });
     setTimeout(() => {
       setHasCopied(false);
     }, 2000);
