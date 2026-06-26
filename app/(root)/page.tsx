@@ -11,6 +11,7 @@ const page = async (props: SearchParamProps) => {
   const currentPage=Number(page as string)||1;
 
   const loggedIn = await getLoggedInUser();
+  if (!loggedIn) return null;
   const accounts = await getAccounts({ userId: loggedIn.$id });
   if (!accounts) return;
   const appwriteItemId = (id as string) || accounts?.data[0]?.appwriteItemId;

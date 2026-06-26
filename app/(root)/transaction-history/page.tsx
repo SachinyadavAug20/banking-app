@@ -4,9 +4,12 @@ import { getAccount, getAccounts } from "@/lib/actions/bank.action";
 import { getLoggedInUser } from "@/lib/actions/user.action";
 import { formatAmount } from "@/lib/utils";
 
-const page = async ({ searchParams: { id, page } }: SearchParamProps) => {
+const page = async (props: SearchParamProps) => {
+  const searchParams = await props.searchParams;
+  const { id, page } = searchParams;
   const currentPage = Number(page as string) || 1;
   const loggedIn = await getLoggedInUser();
+  if (!loggedIn) return null;
   const accounts = await getAccounts({ userId: loggedIn.$id });
   if (!accounts) return;
   const accountsData = accounts.data;

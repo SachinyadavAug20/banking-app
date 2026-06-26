@@ -1,4 +1,14 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import { useSearchParams, useRouter } from "next/navigation";
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { BankTabItem } from "./BankTabItem";
+import BankInfo from "./bankInfo";
+import TransactionsTable from "./TransactionsTable";
+import { formUrlQuery } from "@/lib/utils";
 
 interface Props {
   accounts: Account[];
@@ -6,36 +16,48 @@ interface Props {
   transactions?: Transaction[];
   appwriteItemId: string;
 }
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BankTabItem } from "./BankTabItem";
-import BankInfo from "./bankInfo";
-import TransactionsTable from "./TransactionsTable";
 
 const RecentTransactions = ({
   accounts,
   page = 1,
   transactions = [],
-  appwriteItemId,
 }: Props) => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const [activeId, setActiveId] = useState(
+    searchParams.get("id") || accounts[0]?.appwriteItemId,
+  );
+
+  const handleTabChange = (value: string) => {
+    setActiveId(value);
+    const newUrl = formUrlQuery({
+      params: searchParams.toString(),
+      key: "id",
+      value,
+    });
+    router.push(newUrl, { scroll: false });
+  };
+
   return (
     <section className="recent-transactions px-2!">
       <header className="flex items-center justify-between">
         <h2 className="recent-transactions-label">Recent Transactions</h2>
         <Link
-          href={`/transaction-history/?id=${appwriteItemId}`}
+          href={`/transaction-history/?id=${activeId}`}
           className="view-all-btn px-2! py-1!"
         >
           View all
         </Link>
       </header>
-      <Tabs defaultValue={appwriteItemId} className="w-full flex-col gap-2">
+      <Tabs value={activeId} onValueChange={handleTabChange} className="w-full flex-col gap-2">
         <TabsList className="recent-transactions-tablist">
           {accounts.map((account: Account) => (
             <TabsTrigger key={account.id} value={account.appwriteItemId} className="cursor-pointer">
               <BankTabItem
                 key={account.id}
                 account={account}
-                appwriteItemId={appwriteItemId}
+                appwriteItemId={activeId}
               />
             </TabsTrigger>
           ))}
@@ -48,7 +70,7 @@ const RecentTransactions = ({
           >
             <BankInfo
               account={account}
-              appwriteItemId={appwriteItemId}
+              appwriteItemId={activeId}
               type="full"
             />
             <TransactionsTable transactions={transactions} />

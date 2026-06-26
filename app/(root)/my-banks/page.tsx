@@ -5,6 +5,7 @@ import { getLoggedInUser } from "@/lib/actions/user.action";
 
 const page = async () => {
   const loggedIn = await getLoggedInUser();
+  if (!loggedIn) return null;
   const accounts = await getAccounts({ userId: loggedIn.$id });
   return (
     <section className="flex">
