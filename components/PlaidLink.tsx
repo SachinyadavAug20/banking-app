@@ -71,8 +71,8 @@ const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
           <Image
             src="icons/connect-bank.svg"
             alt="connect"
-            width={20}
-            height={20}
+            width={25}
+            height={25}
           />
           <p className="hidden xl:block text-[16px] font-semibold text-black-2">
             Connect bank
