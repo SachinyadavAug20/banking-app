@@ -16,7 +16,6 @@ const page = async (props: SearchParamProps) => {
   if (!accounts) return;
   const appwriteItemId = (id as string) || accounts?.data[0]?.appwriteItemId;
   const account = await getAccount({ appwriteItemId });
-  console.log({ accounts, accountsData: accounts?.data });
   return (
     <section className="home">
       <div className="home-content">

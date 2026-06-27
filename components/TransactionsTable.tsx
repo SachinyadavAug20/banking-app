@@ -52,11 +52,10 @@ const TransactionsTable = ({
           const isCredit = transaction.type === "credit";
           return (
             <TableRow
-
               key={transaction.id}
               className={`${isDebit || amount[0] === "-" ? "bg-red-50" : "bg-green-50"} border-b border-gray-200`}
             >
-              <TableCell className="max-w-[250px] pl-2 pr-10">
+              <TableCell className="max-w-[250px] pl-2 pr-10 py-3!">
                 <div className="flex items-center gap-3">
                   <h1 className="text-14 truncate font-semibold text-[#344054]">
                     {removeSpecialCharacters(transaction.name)}
@@ -64,20 +63,20 @@ const TransactionsTable = ({
                 </div>
               </TableCell>
               <TableCell
-                className={`pl-2 pr-10 font-semibold ${isDebit || amount[0] === "-" ? "text-[#f04438]" : "text-[#039855]"}`}
+                className={`pl-2 pr-10 font-semibold ${isDebit || amount[0] === "-" ? "text-[#f04438]" : "text-[#039855]"} py-3!`}
               >
                 {isDebit ? `-${amount}` : isCredit ? amount : amount}
               </TableCell>
-              <TableCell className="pl-2 pr-10">
+              <TableCell className="pl-2 pr-10 py-3!">
                 <CategoryBadge category={status} />
               </TableCell>
-              <TableCell className="pl-2 pr-10 min-w-32">
+              <TableCell className="pl-2 pr-10 min-w-32 py-3!">
                 {formatDateTime(new Date(transaction.date)).dateTime}
               </TableCell>
-              <TableCell className="pl-2 pr-10 capitalize min-w-24">
+              <TableCell className="pl-2 pr-10 capitalize min-w-24 py-3!">
                 {transaction.paymentChannel}
               </TableCell>
-              <TableCell className="pl-2 pr-10 max-md:hidden">
+              <TableCell className="pl-2 pr-10 max-md:hidden py-3!">
                 <CategoryBadge category={transaction.category} />
               </TableCell>
             </TableRow>

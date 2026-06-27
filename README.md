@@ -1,5 +1,9 @@
 # Meow bank
 
+as of 27-6-2026 : pagination 
+
+![screenshot](/documentation/screenShots/10.png)
+
 as of 26-6-2026 : transactions form and server actions
 
 ![screenshot](/documentation/screenShots/8.png)
