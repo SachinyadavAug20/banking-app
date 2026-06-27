@@ -1,12 +1,10 @@
-import Image from "next/image";
-import Link from "next/link";
 import BankCard from "./BankCard";
 import { countTransactionCategories } from "@/lib/utils";
 import { Category } from "./Category";
+import PlaidLink from "./PlaidLink";
 
 const RightSideBar = ({ user, banks, transactions }: RightSidebarProps) => {
   const categries: CategoryCount[] = countTransactionCategories(transactions);
-  console.log(categries);
   return (
     <aside className="right-sidebar gap-10!">
       <section className="flex flex-col pb-8">
@@ -26,10 +24,7 @@ const RightSideBar = ({ user, banks, transactions }: RightSidebarProps) => {
       <section className="bank ml-1.5! gap-3!">
         <div className="flex w-full justify-between">
           <h2 className="header-2">My Banks</h2>
-          <Link href={"/"} className="flex gap-2">
-            <Image src="/icons/plus.svg" width={20} height={20} alt="plus" />
-            <h2 className="text-gray-600 text-14 font-semibold">Add Bank</h2>
-          </Link>
+          <PlaidLink user={user} />
         </div>
 
         {banks?.length > 0 && (
@@ -45,8 +40,8 @@ const RightSideBar = ({ user, banks, transactions }: RightSidebarProps) => {
             {banks[1] && (
               <div className="absolute right-0 top-8 z-0 w-[90%]">
                 <BankCard
-                  key={banks[0].$id}
-                  account={banks[0]}
+                  key={banks[1].$id}
+                  account={banks[1]}
                   userName={`${user?.name}`}
                   showBalance={false}
                 />
@@ -57,9 +52,13 @@ const RightSideBar = ({ user, banks, transactions }: RightSidebarProps) => {
         <div className="pt-15! flex flex-1 flex-col gap-6">
           <h2 className="header-2">Top categries</h2>
           <div className="space-y-5">
-            {categries.map((c, i) => (
-              <Category key={c.name} category={c}/>
-            ))}
+            {categries.length > 0 ? (
+              categries.map((c) => (
+                <Category key={c.name} category={c} />
+              ))
+            ) : (
+              <p className="text-14 text-gray-500">No categories yet</p>
+            )}
           </div>
         </div>
       </section>

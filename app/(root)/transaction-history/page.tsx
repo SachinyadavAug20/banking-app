@@ -19,7 +19,7 @@ const page = async (props: SearchParamProps) => {
   const transactions = account?.transactions;
 
   const rowPage = 10;
-  const totalPages = Math.ceil(transactions.length / rowPage);
+  const totalPages = Math.ceil(transactions?.length / rowPage);
   const indexOfLastTransaction = currentPage * rowPage;
   const indexOfFirstTransaction = indexOfLastTransaction - rowPage;
   const currentTransactions = transactions.slice(
@@ -44,7 +44,7 @@ const page = async (props: SearchParamProps) => {
             <p className="text-14 text-blue-25">{account?.data.officialName}</p>
             <p className="text-14 font-semibold tracking-[1.1px] text-white">
               ●●●● ●●●● ●●●●{" "}
-              <span className="text-16">{account.data.mask || 1234}</span>
+              <span className="text-16">{account?.data?.mask || 1234}</span>
             </p>
           </div>
           <div className="transactions-account-balance">

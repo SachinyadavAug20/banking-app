@@ -45,7 +45,14 @@ const TransactionsTable = ({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {transactions.map((transaction: Transaction) => {
+        {transactions.length === 0 ? (
+          <TableRow>
+            <TableCell colSpan={6} className="text-center py-6 text-gray-500">
+              No transactions found
+            </TableCell>
+          </TableRow>
+        ) : (
+          transactions.map((transaction: Transaction) => {
           const status = getTransactionStatus(new Date(transaction.date));
           const amount = formatAmount(transaction.amount);
           const isDebit = transaction.type === "debit";
@@ -81,7 +88,8 @@ const TransactionsTable = ({
               </TableCell>
             </TableRow>
           );
-        })}
+        })
+      )}
       </TableBody>
     </Table>
   );

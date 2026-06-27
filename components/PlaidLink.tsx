@@ -1,3 +1,5 @@
+"use client";
+
 import {
   PlaidLinkOnSuccess,
   PlaidLinkOptions,
@@ -55,7 +57,9 @@ const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
     onSuccess,
   };
 
-  const { open, ready } = usePlaidLink(config);
+  const plaidLinkUseage = usePlaidLink(config);
+  const { open, ready } = plaidLinkUseage;
+
   return (
     <>
       {variant === "primary" ? (
@@ -69,10 +73,11 @@ const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
       ) : variant === "ghost" ? (
         <Button onClick={() => open()} className="plaidlink-ghost">
           <Image
-            src="icons/connect-bank.svg"
+            src="/icons/connect-bank.svg"
             alt="connect"
             width={25}
             height={25}
+            loading="eager"
           />
           <p className="hidden xl:block text-[16px] font-semibold text-black-2">
             Connect bank
@@ -80,13 +85,7 @@ const PlaidLink = ({ user, variant }: PlaidLinkProps) => {
         </Button>
       ) : (
         <Button onClick={() => open()} className="plaidlink-default">
-          <Image
-            src="icons/connect-bank.svg"
-            alt="connect"
-            width={20}
-            height={20}
-          />
-          <p className="text-[16px] font-semibold text-black-2">Connect bank</p>
+          <p className="text-[16px] font-semibold text-black-2">Add bank</p>
         </Button>
       )}
     </>

@@ -76,7 +76,8 @@ export function formatAmount(amount: number): string {
   return formatter.format(amount);
 }
 
-export const parseStringify = (value: any) => value ? JSON.parse(JSON.stringify(value)) : null;
+export const parseStringify = (value: any) =>
+  value ? JSON.parse(JSON.stringify(value)) : null;
 
 export const removeSpecialCharacters = (value: string) => {
   return value.replace(/[^\w\s]/gi, "");
@@ -254,9 +255,7 @@ export const formSchema = (type: "sign-in" | "sign-up") => {
         .min(10, { message: "Date of birth must be at least 10 chars" }),
     ),
     ssn: signUpField(
-      z
-        .string()
-        .min(4, { message: "SSN must be at least 4 chars" }),
+      z.string().min(4, { message: "SSN must be at least 4 chars" }),
     ),
   });
 };

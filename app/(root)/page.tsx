@@ -12,9 +12,8 @@ const page = async (props: SearchParamProps) => {
 
   const loggedIn = await getLoggedInUser();
   if (!loggedIn) return null;
-  const accounts = await getAccounts({ userId: loggedIn.$id });
-  if (!accounts) return;
-  const appwriteItemId = (id as string) || accounts?.data[0]?.appwriteItemId;
+  const accounts = await getAccounts({ userId: loggedIn.$id }) ?? { data: [], totalBanks: 0, totalCurrentBalance: 0 };
+  const appwriteItemId = (id as string) || accounts?.data?.[0]?.appwriteItemId;
   const account = await getAccount({ appwriteItemId });
   return (
     <section className="home">
@@ -29,15 +28,15 @@ const page = async (props: SearchParamProps) => {
           <TotalBalanceBox
             accounts={accounts?.data}
             totalBanks={accounts?.totalBanks}
-            totalCurrentBalance={accounts.totalCurrentBalance}
+            totalCurrentBalance={accounts?.totalCurrentBalance}
           />
         </header>
-        <RecentTransactions accounts={accounts.data} transactions={account?.transactions} appwriteItemId={appwriteItemId} page={currentPage} />
+        <RecentTransactions accounts={accounts?.data ?? []} transactions={account?.transactions ?? []} appwriteItemId={appwriteItemId} page={currentPage} />
       </div>
       <RightSideBar
         user={loggedIn}
-        transactions={account?.transactions}
-        banks={accounts.data?.slice(0, 2)}
+        transactions={account?.transactions ?? []}
+        banks={accounts?.data?.slice(0, 2) ?? []}
       />
     </section>
   );
