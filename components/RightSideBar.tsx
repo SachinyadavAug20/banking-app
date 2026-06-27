@@ -1,8 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import BankCard from "./BankCard";
+import { countTransactionCategories } from "@/lib/utils";
+import { Category } from "./Category";
 
 const RightSideBar = ({ user, banks, transactions }: RightSidebarProps) => {
+  const categries: CategoryCount[] = countTransactionCategories(transactions);
+  console.log(categries);
   return (
     <aside className="right-sidebar gap-10!">
       <section className="flex flex-col pb-8">
@@ -43,13 +47,21 @@ const RightSideBar = ({ user, banks, transactions }: RightSidebarProps) => {
                 <BankCard
                   key={banks[0].$id}
                   account={banks[0]}
-                userName={`${user?.name}`}
+                  userName={`${user?.name}`}
                   showBalance={false}
                 />
               </div>
             )}
           </div>
         )}
+        <div className="pt-15! flex flex-1 flex-col gap-6">
+          <h2 className="header-2">Top categries</h2>
+          <div className="space-y-5">
+            {categries.map((c, i) => (
+              <Category key={c.name} category={c}/>
+            ))}
+          </div>
+        </div>
       </section>
     </aside>
   );
